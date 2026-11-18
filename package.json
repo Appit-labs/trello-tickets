@@ -25,7 +25,13 @@
     "url": "https://github.com/Appit-labs/trello-tickets.git"
   },
   "author": {
-    "name": "Appit Labs",
-    "url": "https://github.com/Appit-labs"
-  }
+    "name": "Ibrahim M. Badr",
+    "url": "https://github.com/ibrahimbdr"
+  },
+  "contributors": [
+    {
+      "name": "Appit Labs",
+      "url": "https://github.com/Appit-Labs"
+    }
+  ]
 }
