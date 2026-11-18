@@ -1,0 +1,18 @@
+# SkillSpector baseline — findings listed here are suppressed on future scans.
+# Edit 'reason' fields and add glob 'rules' as needed. See docs/SUPPRESSION.md.
+version: 2
+scanner_version: 2.12.0
+rules: []
+fingerprints:
+- hash: sha256:d9ecb6fbe310cfb68b752a0e6ab7c92e1ab256c925256c7809d1f03284be11e3
+  rule_id: TT3
+  file: scripts/trello.py
+  reason: Accepted finding (auto-generated baseline)
+- hash: sha256:e5c8b67277c88feef002ab8774ffdf03236ce9d5fc8643f25b8012088b8736ae
+  rule_id: E1
+  file: scripts/trello.py
+  reason: Accepted finding (auto-generated baseline)
+- hash: sha256:9be553a729d02b221bac2318dbc88bb1d878e82ed966a567ed2d532392ce570c
+  rule_id: TR1
+  file: SKILL.md
+  reason: Accepted finding (auto-generated baseline)

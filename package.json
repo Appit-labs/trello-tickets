@@ -1,0 +1,27 @@
+{
+  "name": "trello-tickets",
+  "version": "0.1.0",
+  "description": "Create and read Trello cards from seven baked-in ticket types, with the right sections, checklist, labels and cover color.",
+  "license": "MIT",
+  "keywords": [
+    "agent-skill",
+    "pi-package",
+    "claude-code-plugin",
+    "codex-skill"
+  ],
+  "pi": {
+    "skills": [
+      "./skills"
+    ]
+  },
+  "files": [
+    "skills",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ibrahimbdr/trello-tickets.git"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "trello-tickets",
+  "version": "0.1.0",
+  "description": "Create and read Trello cards from seven baked-in ticket types, with the right sections, checklist, labels and cover color.",
+  "author": {
+    "name": "Ibrahim M. Badr",
+    "url": "https://github.com/ibrahimbdr"
+  },
+  "homepage": "https://github.com/ibrahimbdr/trello-tickets",
+  "license": "MIT",
+  "skills": "./skills"
+}
