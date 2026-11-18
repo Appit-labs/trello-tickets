@@ -1,0 +1,32 @@
+{
+  "skill": "trello-tickets",
+  "out": "trello-tickets/demo.gif",
+  "caption": "trello-tickets \u2014 seven types, baked in",
+  "steps": [
+    {
+      "cmd": "trello.py templates",
+      "phase": "types",
+      "out": [
+        "User Story Template",
+        "Task Template",
+        "Documentation (rst file)",
+        "Defect Template",
+        "Technical Debt",
+        "Spike Template",
+        "Distraction"
+      ]
+    },
+    {
+      "cmd": "trello.py template \"Defect Template\"",
+      "phase": "payoff",
+      "out": [
+        "## Summary",
+        "",
+        "<add description of the defect>",
+        "",
+        "## Environment",
+        ""
+      ]
+    }
+  ]
+}

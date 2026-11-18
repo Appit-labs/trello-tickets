@@ -12,7 +12,7 @@ fingerprints:
   rule_id: E1
   file: scripts/trello.py
   reason: Accepted finding (auto-generated baseline)
-- hash: sha256:9be553a729d02b221bac2318dbc88bb1d878e82ed966a567ed2d532392ce570c
+- hash: sha256:1d635afb8f1cbb3ddf077041ebb628171adb78581f462da068fcc73402a9647d
   rule_id: TR1
   file: SKILL.md
   reason: Accepted finding (auto-generated baseline)
