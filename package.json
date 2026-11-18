@@ -22,6 +22,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ibrahimbdr/trello-tickets.git"
+    "url": "https://github.com/Appit-labs/trello-tickets.git"
+  },
+  "author": {
+    "name": "Appit Labs",
+    "url": "https://github.com/Appit-labs"
   }
 }
