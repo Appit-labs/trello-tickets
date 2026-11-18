@@ -44,6 +44,22 @@ def font(size: int, mono: bool = True):
     return ImageFont.truetype(str(path), size) if path else ImageFont.load_default()
 
 
+WRAP = 92   # characters that fit at 960px with a 16px mono face, minus padding
+
+
+def wrap(line: str, width: int = WRAP, indent: str = "      ") -> list[str]:
+    """Terminal output wraps; a GIF that clips mid-word looks broken."""
+    if len(line) <= width:
+        return [line]
+    out, rest = [], line
+    while len(rest) > width:
+        cut = rest.rfind(" ", 0, width) or width
+        out.append(rest[:cut])
+        rest = indent + rest[cut:].lstrip()
+    out.append(rest)
+    return out
+
+
 def colour_for(line: str) -> tuple:
     if line.startswith("$ "):
         return GREEN
@@ -73,7 +89,7 @@ def draw_frame(lines: list[str], caption: str, phase: str, prompt: str,
     f = font(FS)
     y = BAR + PAD
     for i, raw in enumerate(lines):
-        line = raw[:118]
+        line = raw[:WRAP]
         if cursor is not None and i == cursor and typed is not None:
             line = line[:typed]
         d.text((PAD, y), line, font=f, fill=colour_for(raw))
@@ -129,7 +145,10 @@ def build(spec: dict) -> Path:
             durations.append(55)
         frames.append(draw_frame(lines, step.get("note", ""), step.get("phase", ""), prompt, cursor=idx, typed=len(full)))
         durations.append(320)
-        pending = list(step.get("out", []))
+        wrapped = []
+        for one in step.get("out", []):
+            wrapped.extend(wrap(one))
+        pending = wrapped
         while pending:
             chunk = pending[:2]
             pending = pending[2:]
