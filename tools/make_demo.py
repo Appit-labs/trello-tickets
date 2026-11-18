@@ -26,7 +26,7 @@ from PIL import Image, ImageDraw, ImageFont
 ROOT = Path(__file__).resolve().parent.parent
 DEMOS = ROOT / "demos"
 
-W, PAD, LH = 1040, 26, 24
+W, PAD, LH = 960, 24, 22
 BAR, FOOT = 44, 30
 BG, CHROME = (13, 15, 20), (28, 31, 39)
 FG, DIM, MUTED = (222, 227, 236), (128, 138, 156), (88, 96, 112)
@@ -124,15 +124,18 @@ def build(spec: dict) -> Path:
         lines.append(full)
         idx = len(lines) - 1
         # type it out
-        for n in range(6, len(full) + 1, max(8, len(full) // 7)):
+        for n in range(8, len(full) + 1, max(10, len(full) // 5)):
             frames.append(draw_frame(lines, step.get("note", ""), step.get("phase", ""), prompt, cursor=idx, typed=n))
             durations.append(55)
         frames.append(draw_frame(lines, step.get("note", ""), step.get("phase", ""), prompt, cursor=idx, typed=len(full)))
         durations.append(320)
-        for out in step.get("out", []):
-            lines.append(out)
+        pending = list(step.get("out", []))
+        while pending:
+            chunk = pending[:2]
+            pending = pending[2:]
+            lines.extend(chunk)
             frames.append(draw_frame(lines, step.get("note", ""), step.get("phase", ""), prompt))
-            durations.append(200)
+            durations.append(230)
         lines.append("")
         durations[-1] = 700
 
@@ -148,7 +151,7 @@ def build(spec: dict) -> Path:
 
     durations[-1] = max(durations[-1], 2600)
     # 64-colour palette: three times smaller files, no visible loss on a terminal screenshot
-    frames = [f.quantize(colors=64, method=Image.MEDIANCUT, dither=Image.NONE) for f in frames]
+    frames = [f.quantize(colors=48, method=Image.MEDIANCUT, dither=Image.NONE) for f in frames]
     out = ROOT / "skills" / spec["skill"] / "assets" / "demo.gif"
     out.parent.mkdir(parents=True, exist_ok=True)
     frames[0].save(out, save_all=True, append_images=frames[1:], duration=durations[: len(frames)],
