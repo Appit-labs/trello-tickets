@@ -8,6 +8,7 @@ permissions:
   - network
   - env
   - file_write
+license: MIT
 ---
 
 # Trello tickets
@@ -20,6 +21,8 @@ python3 "$SKILL_DIR/scripts/trello.py" <command>
 
 `templates` and `template <type>` work offline (no credentials). Everything that
 touches a board needs an API key and token.
+
+**Not for:** board administration (creating boards and lists, Butler rules, members) — this creates and reads cards. Jira, Linear or GitHub Issues need their own skill.
 
 ## Portability
 
