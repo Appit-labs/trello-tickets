@@ -1,0 +1,70 @@
+name: publish
+
+# Trusted publishing (OIDC). There is no npm token in this repository, and no token
+# to rotate: npm verifies that the publish came from this repository and this exact
+# workflow file, issues a short-lived credential, and signs the provenance itself.
+#
+# One-time configuration, from a machine logged in to npm with 2FA, npm >= 11.15:
+#
+#   npm trust github @appitlabs/trello-tickets --file publish.yml \
+#     --repository Appit-labs/trello-tickets --allow-publish -y
+#
+# `npm trust` requires the package to already exist, which is why the 0.1.2 releases
+# were bootstrapped with a token from Appit-labs/appit-skills.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write   # the only credential: OIDC
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      # Trusted publishing needs npm >= 11.5.1 and node >= 22.14.
+      - name: npm new enough for OIDC
+        run: npm install -g npm@latest && npm --version
+
+      - name: Name must be scoped to this organisation
+        run: |
+          name=$(node -p 'require("./package.json").name')
+          if [ "$name" != "@appitlabs/trello-tickets" ]; then
+            echo "package.json name is $name, expected @appitlabs/trello-tickets"
+            echo "unscoped names collide with unrelated packages on npm"
+            exit 1
+          fi
+
+      - name: The repository must match, or provenance is rejected
+        run: |
+          url=$(node -p 'require("./package.json").repository.url')
+          case "$url" in
+            *Appit-labs/trello-tickets*) ;;
+            *) echo "repository.url is $url — provenance verifies this against the"
+               echo "repository the bundle was built in (E422 otherwise)"; exit 1 ;;
+          esac
+
+      - name: Publish (provenance is automatic with OIDC)
+        run: npm publish --access public
+
+      - name: The tarball must actually serve
+        run: |
+          pkg=$(node -p 'require("./package.json").name')
+          ver=$(node -p 'require("./package.json").version')
+          url="https://registry.npmjs.org/${pkg}/-/$(echo "$pkg" | sed 's|.*/||')-${ver}.tgz"
+          for i in $(seq 1 40); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "$url" || echo 000)
+            if [ "$code" = "200" ]; then echo "tarball serves after ${i}x30s"; exit 0; fi
+            echo "attempt $i: $code"; sleep 30
+          done
+          echo "tarball never served: $url"
+          echo "npm replication lag, not a bad publish. Do not bump the version for this."
+          exit 1
