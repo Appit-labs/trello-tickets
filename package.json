@@ -1,6 +1,6 @@
 {
-  "name": "trello-tickets",
-  "version": "0.1.1",
+  "name": "@appitlabs/trello-tickets",
+  "version": "0.1.2",
   "description": "Create and read Trello cards from seven baked-in ticket types, with the right sections, checklist, labels and cover color.",
   "license": "MIT",
   "keywords": [
@@ -33,5 +33,9 @@
       "name": "Appit Labs",
       "url": "https://github.com/Appit-Labs"
     }
-  ]
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
 }
